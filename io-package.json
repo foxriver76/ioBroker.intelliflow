@@ -1,15 +1,33 @@
 {
     "common": {
         "name": "intelliflow",
-        "version": "1.6.2",
+        "version": "0.0.1",
         "news": {
             "0.0.1": {
-                "en": "initial version"
+                "en": "initial version",
+                "de": "erste Version",
+                "ru": "Первоначальная версия",
+                "pt": "versão inicial",
+                "nl": "eerste versie",
+                "fr": "version initiale",
+                "it": "versione iniziale",
+                "es": "versión inicial",
+                "pl": "początkowa wersja",
+                "zh-cn": "初始版本"
             }
         },
         "title": "Intelliflow",
         "desc": {
             "en": "Analyze your streaming data!",
+            "de": "Analysieren Sie Ihre Streaming-Daten!",
+            "ru": "Анализируйте ваши потоковые данные!",
+            "pt": "Analise seus dados de streaming!",
+            "nl": "Analyseer uw streaminggegevens!",
+            "fr": "Analysez vos données en streaming!",
+            "it": "Analizza i tuoi dati di streaming!",
+            "es": "¡Analiza tus datos de transmisión!",
+            "pl": "Analizuj dane przesyłane strumieniowo!",
+            "zh-cn": "分析您的流媒体数据！"
         },
         "authors": [
             "Moritz Heusinger <moritz.heusinger@gmail.com>"
@@ -32,15 +50,11 @@
         ],
         "readme": "https://github.com/foxriver76/ioBroker.intelliflow/blob/master/README.md",
         "loglevel": "info",
-        "type": "logic",
+        "type": "logic"
     },
-    "docs": {
-    },
-    "native": {
-
-    },
-    "protectedNative": [
-    ],
+    "docs": {},
+    "native": {},
+    "protectedNative": [],
     "objects": [],
     "instanceObjects": [
         {
