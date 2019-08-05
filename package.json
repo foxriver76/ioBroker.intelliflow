@@ -1,0 +1,55 @@
+{
+	"name": "iobroker.intelliflow",
+	"version": "0.0.1",
+	"engines": {
+		"node": ">=8.0.0"
+	},
+	"description": "ioBroker Stream Analysis Adapter",
+	"author": {
+		"name": "Moritz Heusinger",
+		"email": "moritz.heusinger@gmail.com"
+	},
+	"contributors": [
+		{
+			"name": "Moritz Heusinger",
+			"email": "moritz.heusinger@gmail.com"
+		}
+	],
+	"homepage": "https://github.com/foxriver76/ioBroker.intelliflow",
+	"license": "MIT",
+	"keywords": [
+		"ioBroker",
+		"knowledge",
+		"machine learning",
+		"artifical intelligence",
+		"Smart Home",
+		"home automation"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/foxriver76/ioBroker.intelliflow"
+	},
+	"dependencies": {
+		"numjs": "^0.16.0",
+		"@iobroker/adapter-core": "^1.0.3"
+	},
+	"devDependencies": {
+		"gulp": "^4.0.0",
+		"mocha": "^6.0.0",
+		"chai": "^4.1.2",
+		"eslint": "^6.0.0",
+		"axios": "^0.19.0",
+		"@iobroker/testing": "^1.0.16"
+	},
+	"main": "main.js",
+	"scripts": {
+		"test:unit": "node_modules/.bin/mocha test/unitAdapter --exit",
+		"test:package": "node_modules/.bin/mocha test/packageFiles --exit",
+		"test:integration": "node_modules/.bin/mocha test/integrationAdapter --exit",
+		"test": "node node_modules/mocha/bin/mocha --exit"
+	},
+	"bugs": {
+		"url": "https://github.com/foxriver76/ioBroker.intelliflow/issues"
+	},
+	"readmeFilename": "README.md"
+}
