@@ -12,7 +12,7 @@ let adapter;
 
 function startAdapter(options) {
     options = options || {};
-    options = {...options, ...{name: `intelliflowc`}};
+    options = {...options, ...{name: `intelliflow`}};
 
     adapter = new utils.Adapter(options);
 
