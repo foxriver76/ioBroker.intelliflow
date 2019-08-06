@@ -53,7 +53,9 @@
     "type": "logic"
   },
   "docs": {},
-  "native": {},
+  "native": {
+    "tasks": []
+  },
   "protectedNative": [],
   "objects": [],
   "instanceObjects": [

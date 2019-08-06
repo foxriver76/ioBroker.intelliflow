@@ -18,7 +18,7 @@ function startAdapter(options) {
 
     adapter.on(`unload`, callback => {
         try {
-            adapter.log.info(`[END] Stopping Bring! adapter...`);
+            adapter.log.info(`[END] Stopping Intelliflow adapter...`);
             adapter.setState(`info.connection`, false, true);
             callback();
         } catch (e) {

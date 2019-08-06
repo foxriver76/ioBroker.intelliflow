@@ -23,35 +23,46 @@
     </style>
 
     <script type="text/javascript">
-        // the function loadSettings has to exist ...
+        var tasks = [];
+
         function load(settings, onChange) {
             if (!settings) return;
+
+            tasks = settings.tasks || [];
+
             $('.value').each(function () {
                 var $key = $(this);
                 var id = $key.attr('id');
+
                 if ($key.attr('type') === 'checkbox') {
                     // do not call onChange direct, because onChange could expect some arguments
                     $key.prop('checked', settings[id]).change(function () {
                         onChange();
                     });
                 } else {
-                    var val = $key.data('crypt') && settings[id] ? decrypt(secret, settings[id]) : settings[id];
+                    var val = settings[id];
                     // do not call onChange direct, because onChange could expect some arguments
                     $key.val(val).change(function () {
-                        if ($(this).attr('id') !== 'notificationsType')
-                            onChange();
+                        onChange();
                     }).keyup(function () {
                         onChange();
                     });
                 }
             });
 
+            if (typeof values2table === 'function') {
+                $('#machine-learning').hide();
+                $('#pager-ml').hide();
+                values2table('values', tasks, onChange);
+            } else {
+                editTable('machine-learning', ['enum', 'label', 'trigger', 'cron'], tasks, 350);
+                $('#values').hide();
+            } // endElse
 
             onChange(false);
             M.updateTextFields();
         } // endLoad
 
-        // ... and the function save has to exist.
         // you have to make sure the callback is called with the settings object as first param!
         function save(callback) {
             // example: select elements with class=value and build settings object
@@ -64,6 +75,13 @@
                     obj[$this.attr('id')] = $this.val();
                 }
             });
+
+            if (typeof table2values === 'function') {
+                obj.tasks = table2values('values');
+            } else {
+                obj.tasks = getTableResult('machine-learning', ['enum', 'label', 'trigger', 'cron']);
+            } // endElse
+
             callback(obj);
         } // endSave
     </script>
@@ -72,19 +90,37 @@
 <!-- you have to put your config page in a div with id adapter-container -->
 <div class="m adapter-container">
     <div class="row">
-        <div class="col s12">
-            <ul class="tabs">
-                <li class="tab col s5"><a href="#tab-main" class="translate active">Main settings</a></li>
-            </ul>
-        </div>
-        <div id="tab-main" class="col s12 page">
-            <div class="row">
-                <div class="input-field col s6">
-                    <img src="intelliflow.png" class="logo">
-                </div>
-            </div>
+        <div class="input-field col s6">
+            <img src="intelliflow.png" class="logo">
         </div>
     </div>
+
+    <table id="machine-learning"></table>
+    <div id="pager-ml"></div>
+
+    <div id="values" style="width: 100%; height: calc(100% - 195px)">
+        <div class="row">
+            <a class="btn-floating waves-effect waves-light blue"><i
+                    class="material-icons table-button-add">add</i></a>
+        </div>
+        <div style="width: 100%; height: calc(100% - 30px); overflow: auto;">
+            <table class="table-values" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th data-name="_index" style="width: 40px" class="blue translate"></th>
+                    <th data-name="enum" style="width: 30%" class="blue translate">Feature Enum</th>
+                    <th data-name="label" class="blue translate">Label</th>
+                    <th data-name="trigger" class="blue translate">Trigger</th>
+                    <th data-name="cron" class="blue translate">CRON</th>
+                    <th data-buttons="delete" style="width: 40px" class="blue"></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
 </div>
 </body>
 </html>
