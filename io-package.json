@@ -58,14 +58,5 @@
   },
   "protectedNative": [],
   "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    }
-  ]
+  "instanceObjects": []
 }
