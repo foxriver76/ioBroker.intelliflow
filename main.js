@@ -8,6 +8,8 @@
 
 const utils = require(`@iobroker/adapter-core`);
 const nj = require(`numjs`);
+const RSLVQ = require(`${__dirname}/lib/rslvq`);
+
 let adapter;
 
 function startAdapter(options) {
@@ -108,7 +110,9 @@ async function main() {
         task.featureNames = await getFeatureNames(task);
         adapter.log.info(`Got feature names for ${task[`name-id`]}: ${JSON.stringify(task.featureNames)}`);
 
-        // todo: If prototypes saved - Init the RSLVQ
+        const initialPrototypesState = await adapter.getStateAsync(`${task[`name-id`]}.prototypes`);
+
+        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({initialPrototypes: initialPrototypesState.val}) : new RSLVQ();
 
         // Subscribe to the trigger
         if (task[`trigger`]) {
