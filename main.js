@@ -7,9 +7,8 @@
 'use strict';
 
 const utils = require(`@iobroker/adapter-core`);
-const np = require(`numjs`);
+const nj = require(`numjs`);
 let adapter;
-const clf = [];
 
 function startAdapter(options) {
     options = options || {};
@@ -105,11 +104,22 @@ async function main() {
             });
         } // endTryCatch
 
+        // get name of the features once - they won't change during runtime
+        task.featureNames = await getFeatureNames(task);
+        adapter.log.info(`Got feature names for ${task[`name-id`]}: ${JSON.stringify(task.featureNames)}`);
+
+        // todo: If prototypes saved - Init the RSLVQ
+
         // Subscribe to the trigger
         if (task[`trigger`]) {
             adapter.log.info(`Subscribe to trigger ${task[`trigger`]} for ${task[`name-id`]}`);
-            adapter.on(task[`trigger`], obj => {
+
+            adapter.subscribeForeignStates(task[`trigger`]);
+
+            adapter.on(`stateChange`, id => {
+                if (!id || id !== task[`trigger`]) return;
                 adapter.log.info(`Triggered prediction of ${task[`name-id`]} by ${task[`trigger`]}`);
+                doPrediction(task);
             });
         } // endIf
 
@@ -118,12 +128,49 @@ async function main() {
             adapter.log.info(`Create prediction interval (${parseInt(task[`interval`])} seconds) for ${task[`name-id`]}`);
             setInterval(() => {
                 adapter.log.info(`Triggered prediction of ${task[`name-id`]} by interval (${task[`interval`]} seconds)`);
+                doPrediction(task);
             }, parseInt(task[`interval`]) * 1000);
         } // endIf
 
         // todo: learn when currentCorrectLabel changes
     } // endFor
 } // endMain
+
+/* Internals */
+async function getFeatureNames(task) {
+    const enumSplitted = task.enum.split(`.`);
+    const enumType = enumSplitted[0] === `enum` ? enumSplitted[1] : enumSplitted[0];
+    const enumName = enumSplitted[0] === `enum` ? enumSplitted[2] : enumSplitted[1];
+    const enums = await adapter.getEnumAsync(enumType);
+    const featureNames = enums.result[`enum.${enumType}.${enumName.toLowerCase()}`].common.members;
+    return featureNames;
+} // endGetFeatureNames
+
+async function doPrediction(task) {
+    // We have to get all values
+    let featureSet = [];
+
+    for (const featureName of task.featureNames) {
+        let feature = await adapter.getForeignStateAsync(featureName);
+        feature = feature.val;
+
+        // preprocess boolean
+        if (typeof feature === `boolean`) {
+            feature = feature ? 1 : 0;
+        } else if (typeof feature !== `number`) {
+            adapter.log.warn(`${featureName} is not boolean and not number - skip this feature`);
+            continue;
+        } // endElseIf
+
+        featureSet.push(feature);
+    } // endFor
+
+    featureSet = nj.array(featureSet);
+    adapter.log.info(`Using feature set for ${task[`name-id`]}: ${featureSet}`);
+
+    // todo: predict via rslvq
+
+} // endDoPrediction
 
 if (module && module.parent) {
     module.exports = startAdapter;
