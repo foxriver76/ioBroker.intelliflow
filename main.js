@@ -136,7 +136,25 @@ async function main() {
             }, parseInt(task[`interval`]) * 1000);
         } // endIf
 
-        // todo: learn when currentCorrectLabel changes
+        // learn when currentCorrectLabel changes
+        adapter.on(`stateChange`, async (id, state) => {
+            if (!id || id !== `${adapter.namespace}.${task[`name-id`]}.currentCorrectLabel`) return;
+
+            // get feature set
+            const featureSet = await getFeatures(task);
+            let y;
+
+            if (typeof state.val === `boolean`) {
+                y = state.val ? 1 : 0;
+            } else if (typeof state.val !== `number`) {
+                adapter.log.warn(`${state.val} is not boolean and not number - did not learn`);
+                return;
+            } // endElseIf
+
+            adapter.log.info(`Using feature set to learn label ${y} to ${task[`name-id`]}: ${featureSet}`);
+
+            task.classifier.partialFit(featureSet, y);
+        });
     } // endFor
 } // endMain
 
@@ -151,8 +169,17 @@ async function getFeatureNames(task) {
 } // endGetFeatureNames
 
 async function doPrediction(task) {
+    const featureSet = await getFeatures(task);
+
+    adapter.log.info(`Using feature set for prediction of ${task[`name-id`]}: ${featureSet}`);
+
+    // todo: predict via rslvq
+
+} // endDoPrediction
+
+async function getFeatures(task) {
     // We have to get all values
-    let featureSet = [];
+    const featureSet = [];
 
     for (const featureName of task.featureNames) {
         let feature = await adapter.getForeignStateAsync(featureName);
@@ -169,12 +196,8 @@ async function doPrediction(task) {
         featureSet.push(feature);
     } // endFor
 
-    featureSet = nj.array(featureSet);
-    adapter.log.info(`Using feature set for ${task[`name-id`]}: ${featureSet}`);
-
-    // todo: predict via rslvq
-
-} // endDoPrediction
+    return nj.array(featureSet);
+} // endGetFeatures
 
 if (module && module.parent) {
     module.exports = startAdapter;
