@@ -56,8 +56,7 @@ async function main() {
                 role: `label`,
                 type: `boolean`,
                 read: true,
-                write: false,
-                def: false
+                write: false
             },
             native: {}
         });
@@ -67,11 +66,10 @@ async function main() {
             type: `state`,
             common: {
                 name: `Prototypes of RSLVQ for ${task[`name-id`]}`,
-                role: `list`,
+                role: `json`,
                 type: `json`,
                 read: true,
-                write: false,
-                def: false
+                write: false
             },
             native: {}
         });
@@ -112,7 +110,11 @@ async function main() {
 
         const initialPrototypesState = await adapter.getStateAsync(`${task[`name-id`]}.prototypes`);
 
-        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({initialPrototypes: initialPrototypesState.val}) : new RSLVQ();
+        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({initialPrototypes: JSON.parse(initialPrototypesState.val)}) : new RSLVQ();
+
+        if (initialPrototypesState && initialPrototypesState.val) {
+            adapter.log.info(`Successfully loaded prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
+        } // endIf
 
         // Subscribe to the trigger
         if (task[`trigger`]) {
@@ -153,7 +155,11 @@ async function main() {
 
             adapter.log.info(`Using feature set to learn label ${y} to ${task[`name-id`]}: ${featureSet}`);
 
-            task.classifier.partialFit(featureSet, y);
+            await task.classifier.partialFit(featureSet, y);
+            adapter.log.info(`New prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
+
+            // after learning store the new prototypes
+            adapter.setState(`${task[`name-id`]}.prototypes`, JSON.stringify(task.classifier.w), true);
         });
     } // endFor
 } // endMain
