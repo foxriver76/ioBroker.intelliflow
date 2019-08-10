@@ -109,8 +109,19 @@ async function main() {
         adapter.log.info(`Got feature names for ${task[`name-id`]}: ${JSON.stringify(task.featureNames)}`);
 
         const initialPrototypesState = await adapter.getStateAsync(`${task[`name-id`]}.prototypes`);
+        let initialPrototypes;
 
-        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({initialPrototypes: JSON.parse(initialPrototypesState.val)}) : new RSLVQ();
+        // prepare stored prototypes
+        if (initialPrototypesState && initialPrototypesState.val) {
+            initialPrototypes = JSON.parse(initialPrototypesState.val);
+            for (const label in initialPrototypes) {
+                for (const proto in initialPrototypes[label]) {
+                    initialPrototypes[label][proto] = nj.array(JSON.parse(initialPrototypes[label][proto]));
+                } // endFor
+            } // endFor
+        } // endIf
+
+        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({logger: adapter.log, initialPrototypes: initialPrototypes}) : new RSLVQ({logger: adapter.log});
 
         if (initialPrototypesState && initialPrototypesState.val) {
             adapter.log.info(`Successfully loaded prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
@@ -179,8 +190,9 @@ async function doPrediction(task) {
 
     adapter.log.info(`Using feature set for prediction of ${task[`name-id`]}: ${featureSet}`);
 
-    // todo: predict via rslvq
-
+    const y = await task[`classifier`].predict(featureSet);
+    adapter.setState(`${task[`name-id`]}.prediction`, y, true);
+    adapter.log.info(`Predicted label ${y} for ${task[`name-id`]}`);
 } // endDoPrediction
 
 async function getFeatures(task) {
