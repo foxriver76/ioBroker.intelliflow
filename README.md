@@ -10,8 +10,10 @@
 
 [![NPM](https://nodei.co/npm/iobroker.intelliflow.png?downloads=true)](https://nodei.co/npm/iobroker.intelliflow/)
 
-## Changelog
+## How-To
+This is a proof of concept of a real world application for streaming classifiers.
 
+## Changelog
 ### 0.0.1 (2019-08-05)
 * (foxriver76) initial release
 
