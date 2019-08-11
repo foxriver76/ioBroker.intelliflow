@@ -74,35 +74,18 @@ async function main() {
             native: {}
         });
 
-        // Create datapoints to learn, by copying the label
-        try {
-            const labelObj = await adapter.getForeignObjectAsync(task[`label`]);
-
-            adapter.setObjectNotExists(`${task[`name-id`]}.currentCorrectLabel`, {
-                type: labelObj.type,
-                common: {
-                    name: `Current Correct Label of ${task[`name-id`]}`,
-                    role: labelObj.common.role,
-                    type: labelObj.common.type,
-                    read: true,
-                    write: true
-                },
-                native: labelObj.native
-            });
-        } catch (e) {
-            adapter.log.warn(`Error on copying label object, using default: ${e}`);
-            adapter.setObjectNotExists(`${task[`name-id`]}.currentCorrectLabel`, {
-                type: `state`,
-                common: {
-                    name: `Current Correct Label of ${task[`name-id`]}`,
-                    role: `label`,
-                    type: `number`,
-                    read: true,
-                    write: true
-                },
-                native: {}
-            });
-        } // endTryCatch
+        // Create datapoints to learn, label should be numeric
+        adapter.setObjectNotExists(`${task[`name-id`]}.currentCorrectLabel`, {
+            type: `state`,
+            common: {
+                name: `Current Correct Label of ${task[`name-id`]}`,
+                role: `label`,
+                type: `number`,
+                read: true,
+                write: true
+            },
+            native: {}
+        });
 
         // get name of the features once - they won't change during runtime
         task.featureNames = await getFeatureNames(task);
@@ -116,12 +99,17 @@ async function main() {
             initialPrototypes = JSON.parse(initialPrototypesState.val);
             for (const label in initialPrototypes) {
                 for (const proto in initialPrototypes[label]) {
-                    initialPrototypes[label][proto] = nj.array(JSON.parse(initialPrototypes[label][proto]));
+                    if (typeof initialPrototypes[label][proto] !== `object`) {
+                        initialPrototypes[label][proto] = JSON.parse(initialPrototypes[label][proto]);
+                    } // endIf
                 } // endFor
             } // endFor
         } // endIf
 
-        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({logger: adapter.log, initialPrototypes: initialPrototypes}) : new RSLVQ({logger: adapter.log});
+        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({
+            logger: adapter.log,
+            initialPrototypes: initialPrototypes
+        }) : new RSLVQ({logger: adapter.log});
 
         if (initialPrototypesState && initialPrototypesState.val) {
             adapter.log.info(`Successfully loaded prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
@@ -155,12 +143,10 @@ async function main() {
 
             // get feature set
             const featureSet = await getFeatures(task);
-            let y;
+            const y = state.val;
 
-            if (typeof state.val === `boolean`) {
-                y = state.val ? 1 : 0;
-            } else if (typeof state.val !== `number`) {
-                adapter.log.warn(`${state.val} is not boolean and not number - did not learn`);
+            if (typeof y !== `number`) {
+                adapter.log.warn(`${state.val} is not a number - did not learn`);
                 return;
             } // endElseIf
 

@@ -55,7 +55,7 @@
                 $('#pager-ml').hide();
                 values2table('values', tasks, onChange);
             } else {
-                editTable('machine-learning', ['name-id', 'enum', 'label', 'trigger', 'interval'], tasks, 350);
+                editTable('machine-learning', ['name-id', 'enum', 'trigger', 'interval'], tasks, 350);
                 $('#values').hide();
             } // endElse
 
@@ -79,7 +79,7 @@
             if (typeof table2values === 'function') {
                 obj.tasks = table2values('values');
             } else {
-                obj.tasks = getTableResult('machine-learning', ['name-id', 'enum', 'label', 'trigger', 'interval']);
+                obj.tasks = getTableResult('machine-learning', ['name-id', 'enum', 'trigger', 'interval']);
             } // endElse
 
             callback(obj);
@@ -110,7 +110,6 @@
                     <th data-name="_index" style="width: 40px" class="blue translate"></th>
                     <th data-name="name-id" class="blue translate">Unique Name</th>
                     <th data-name="enum" class="blue translate">Feature Enum</th>
-                    <th data-name="label" class="blue translate">Label</th>
                     <th data-name="trigger" class="blue translate">Trigger</th>
                     <th data-name="interval" style="width: 10%" class="blue translate">Interval (s)</th>
                     <th data-buttons="delete" style="width: 40px" class="blue"></th>
