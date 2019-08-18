@@ -97,10 +97,16 @@ async function main() {
         // prepare stored prototypes
         if (initialPrototypesState && initialPrototypesState.val) {
             initialPrototypes = JSON.parse(initialPrototypesState.val);
-            for (const label in initialPrototypes) {
-                for (const proto in initialPrototypes[label]) {
-                    if (typeof initialPrototypes[label][proto] !== `object`) {
-                        initialPrototypes[label][proto] = JSON.parse(initialPrototypes[label][proto]);
+            for (const label in initialPrototypes.prototypes) {
+                for (const proto in initialPrototypes.prototypes[label]) {
+                    if (typeof initialPrototypes.prototypes[label][proto] !== `object`) {
+                        initialPrototypes.prototypes[label][proto] = JSON.parse(initialPrototypes.prototypes[label][proto]);
+                    } // endIf
+                    if (typeof initialPrototypes.squaredMeanGradient[label][proto] !== `object`) {
+                        initialPrototypes.squaredMeanGradient[label][proto] = JSON.parse(initialPrototypes.squaredMeanGradient[label][proto]);
+                    } // endIf
+                    if (typeof initialPrototypes.squaredMeanStep[label][proto] !== `object`) {
+                        initialPrototypes.squaredMeanGradient[label][proto] = JSON.parse(initialPrototypes.squaredMeanStep[label][proto]);
                     } // endIf
                 } // endFor
             } // endFor
@@ -155,8 +161,14 @@ async function main() {
             await task.classifier.partialFit(featureSet, y);
             adapter.log.info(`New prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
 
+            // store all necessary information
+            const storeObj = {};
+            storeObj.prototypes = task.classifier.w;
+            storeObj.squaredMeanGradient = task.classifier.squaredMeanGradient;
+            storeObj.squaredMeanStep = task.classifier.squaredMeanStep;
+
             // after learning store the new prototypes
-            adapter.setState(`${task[`name-id`]}.prototypes`, JSON.stringify(task.classifier.w), true);
+            adapter.setState(`${task[`name-id`]}.prototypes`, JSON.stringify(storeObj), true);
         });
     } // endFor
 } // endMain
