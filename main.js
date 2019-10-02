@@ -191,10 +191,13 @@ async function doPrediction(task) {
     const featureSet = await getFeatures(task);
 
     adapter.log.info(`Using feature set for prediction of ${task[`name-id`]}: ${featureSet}`);
-
-    const y = await task[`classifier`].predict(featureSet);
-    adapter.setState(`${task[`name-id`]}.prediction`, y, true);
-    adapter.log.info(`Predicted label ${y} for ${task[`name-id`]}`);
+    try {
+        const y = await task[`classifier`].predict(featureSet);
+        adapter.setState(`${task[`name-id`]}.prediction`, y, true);
+        adapter.log.info(`Predicted label ${y} for ${task[`name-id`]}`);
+    } catch (e) {
+        adapter.log.warn(`Error predicting label for feature set ${featureSet}: ${e}`);
+    } // endCatch
 } // endDoPrediction
 
 async function getFeatures(task) {
