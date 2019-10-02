@@ -106,7 +106,7 @@ async function main() {
                         initialPrototypes.squaredMeanGradient[label][proto] = JSON.parse(initialPrototypes.squaredMeanGradient[label][proto]);
                     } // endIf
                     if (typeof initialPrototypes.squaredMeanStep[label][proto] !== `object`) {
-                        initialPrototypes.squaredMeanGradient[label][proto] = JSON.parse(initialPrototypes.squaredMeanStep[label][proto]);
+                        initialPrototypes.squaredMeanStep[label][proto] = JSON.parse(initialPrototypes.squaredMeanStep[label][proto]);
                     } // endIf
                 } // endFor
             } // endFor
@@ -157,8 +157,12 @@ async function main() {
             } // endElseIf
 
             adapter.log.info(`Using feature set to learn label ${y} to ${task[`name-id`]}: ${featureSet}`);
+            try {
+                await task.classifier.partialFit(featureSet, y);
+            } catch (e) {
+                adapter.log.warn(`Error fitting data to classifier: ${e}`);
+            }
 
-            await task.classifier.partialFit(featureSet, y);
             adapter.log.info(`New prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
 
             // store all necessary information
