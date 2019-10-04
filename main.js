@@ -67,7 +67,7 @@ async function main() {
             common: {
                 name: `Prototypes of RSLVQ for ${task[`name-id`]}`,
                 role: `json`,
-                type: `json`,
+                type: `object`,
                 read: true,
                 write: false
             },
