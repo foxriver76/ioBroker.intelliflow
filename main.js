@@ -128,8 +128,8 @@ async function main() {
             adapter.subscribeForeignStates(task[`trigger`]);
 
             adapter.on(`stateChange`, id => {
-                if (!id || id !== task[`trigger`]) return;
-                adapter.log.info(`Triggered prediction of ${task[`name-id`]} by ${task[`trigger`]}`);
+                if (!id || !matchWildcard(id, task[`trigger`])) return;
+                adapter.log.info(`Triggered prediction of ${task[`name-id`]} by ${task[`trigger`]} triggered by ${id}`);
                 doPrediction(task);
             });
         } // endIf
@@ -221,6 +221,11 @@ async function getFeatures(task) {
 
     return nj.array(featureSet);
 } // endGetFeatures
+
+function matchWildcard(str, rule) {
+    const escapeRegex = (str) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, `\\$1`);
+    return new RegExp(`^${rule.split(`*`).map(escapeRegex).join(`.*`)}$`).test(str);
+} // endMatchWildcard
 
 if (module && module.parent) {
     module.exports = startAdapter;
