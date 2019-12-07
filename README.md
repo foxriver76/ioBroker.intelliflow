@@ -11,7 +11,11 @@
 [![NPM](https://nodei.co/npm/iobroker.intelliflow.png?downloads=true)](https://nodei.co/npm/iobroker.intelliflow/)
 
 ## How-To
-This is a proof of concept of a real world application for streaming classifiers.
+This is a proof of concept of a real world application for streaming classifiers. 
+There is currently no official support for this adapter. However, it is possible to install it via GitHub if desired.
+
+## References of implemented classifier
+- Heusinger, Moritz, Christoph Raab and Frank-Michael Schleif. “Passive Concept Drift Handling via Momentum Based Robust Soft Learning Vector Quantization.” WSOM+ (2019).
 
 ## Changelog
 ### 0.0.1 (2019-08-05)
