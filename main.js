@@ -129,7 +129,7 @@ async function main() {
 
             adapter.on(`stateChange`, id => {
                 if (!id || !matchWildcard(id, task[`trigger`])) return;
-                adapter.log.info(`Triggered prediction of ${task[`name-id`]} by ${task[`trigger`]} triggered by ${id}`);
+                adapter.log.debug(`Triggered prediction of ${task[`name-id`]} by ${task[`trigger`]} triggered by ${id}`);
                 doPrediction(task);
             });
         } // endIf
@@ -138,7 +138,7 @@ async function main() {
         if (task[`interval`]) {
             adapter.log.info(`Create prediction interval (${parseInt(task[`interval`])} seconds) for ${task[`name-id`]}`);
             setInterval(() => {
-                adapter.log.info(`Triggered prediction of ${task[`name-id`]} by interval (${task[`interval`]} seconds)`);
+                adapter.log.debug(`Triggered prediction of ${task[`name-id`]} by interval (${task[`interval`]} seconds)`);
                 doPrediction(task);
             }, parseInt(task[`interval`]) * 1000);
         } // endIf
@@ -149,12 +149,12 @@ async function main() {
 
             // get feature set
             const featureSet = await getFeatures(task);
-            const y = state.val;
+            const y = parseInt(state.val);
 
-            if (typeof y !== `number`) {
-                adapter.log.warn(`${state.val} is not a number - did not learn`);
+            if (isNaN(y)) {
+                adapter.log.warn(`Cannot learn ${state.val} for ${task[`name-id`]} - not a number`);
                 return;
-            } // endElseIf
+            } // endIf
 
             adapter.log.info(`Using feature set to learn label ${y} to ${task[`name-id`]}: ${featureSet}`);
             try {
@@ -190,11 +190,11 @@ async function getFeatureNames(task) {
 async function doPrediction(task) {
     const featureSet = await getFeatures(task);
 
-    adapter.log.info(`Using feature set for prediction of ${task[`name-id`]}: ${featureSet}`);
+    adapter.log.debug(`Using feature set for prediction of ${task[`name-id`]}: ${featureSet}`);
     try {
         const y = await task[`classifier`].predict(featureSet);
         adapter.setState(`${task[`name-id`]}.prediction`, y, true);
-        adapter.log.info(`Predicted label ${y} for ${task[`name-id`]}`);
+        adapter.log.debug(`Predicted label ${y} for ${task[`name-id`]}`);
     } catch (e) {
         adapter.log.warn(`Error predicting label for feature set ${featureSet}: ${e}`);
     } // endCatch
