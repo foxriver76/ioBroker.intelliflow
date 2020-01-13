@@ -108,6 +108,12 @@ async function main() {
                     if (typeof initialPrototypes.squaredMeanStep[label][proto] !== `object`) {
                         initialPrototypes.squaredMeanStep[label][proto] = JSON.parse(initialPrototypes.squaredMeanStep[label][proto]);
                     } // endIf
+                    if (typeof initialPrototypes.pastSquaredGradientsV[label][proto] !== `object`) {
+                        initialPrototypes.pastSquaredGradientsV[label][proto] = JSON.parse(initialPrototypes.pastSquaredGradientsV[label][proto]);
+                    } // endIf
+                    if (typeof initialPrototypes.pastGradientsM[label][proto] !== `object`) {
+                        initialPrototypes.pastGradientsM[label][proto] = JSON.parse(initialPrototypes.pastGradientsM[label][proto]);
+                    } // endIf
                 } // endFor
             } // endFor
         } // endIf
@@ -178,6 +184,8 @@ async function main() {
             storeObj.prototypes = task.classifier.w;
             storeObj.squaredMeanGradient = task.classifier.squaredMeanGradient;
             storeObj.squaredMeanStep = task.classifier.squaredMeanStep;
+            storeObj.pastGradientsM = task.classifier.pastGradientsM;
+            storeOBj.pastSquaredGradientsV = task.classifier.pastSquaredGradientsV;
 
             // after learning store the new prototypes
             adapter.setState(`${task[`name-id`]}.prototypes`, JSON.stringify(storeObj), true);
