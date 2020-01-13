@@ -112,10 +112,18 @@ async function main() {
             } // endFor
         } // endIf
 
-        task.classifier = initialPrototypesState && initialPrototypesState.val ? new RSLVQ({
+        const options = {
             logger: adapter.log,
-            initialPrototypes: initialPrototypes
-        }) : new RSLVQ({logger: adapter.log});
+            initialPrototypes: initialPrototypesState && initialPrototypesState.val ? initialPrototypes : undefined,
+            learningRate: adapter.config.rslvqLearningRate,
+            sigma: adapter.config.rslvqSigma,
+            gamma: adapter.config.rslvqDecayRate,
+            beta1: adapter.config.rslvqBeta1,
+            beta2: adapter.config.rslvqBeta2,
+            gradientOptimizer: selectedClassifier;
+        };
+
+        task.classifier = new RSLVQ(options);
 
         if (initialPrototypesState && initialPrototypesState.val) {
             adapter.log.info(`Successfully loaded prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
