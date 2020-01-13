@@ -1,62 +1,69 @@
 {
-  "common": {
-    "name": "intelliflow",
-    "version": "0.0.1",
-    "news": {
-      "0.0.1": {
-        "en": "initial version",
-        "de": "erste Version",
-        "ru": "Первоначальная версия",
-        "pt": "versão inicial",
-        "nl": "eerste versie",
-        "fr": "version initiale",
-        "it": "versione iniziale",
-        "es": "versión inicial",
-        "pl": "początkowa wersja",
-        "zh-cn": "初始版本"
-      }
+    "common": {
+        "name": "intelliflow",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial version",
+                "de": "erste Version",
+                "ru": "Первоначальная версия",
+                "pt": "versão inicial",
+                "nl": "eerste versie",
+                "fr": "version initiale",
+                "it": "versione iniziale",
+                "es": "versión inicial",
+                "pl": "początkowa wersja",
+                "zh-cn": "初始版本"
+            }
+        },
+        "title": "Intelliflow",
+        "desc": {
+            "en": "Analyze your streaming data!",
+            "de": "Analysieren Sie Ihre Streaming-Daten!",
+            "ru": "Анализируйте ваши потоковые данные!",
+            "pt": "Analise seus dados de streaming!",
+            "nl": "Analyseer uw streaminggegevens!",
+            "fr": "Analysez vos données en streaming!",
+            "it": "Analizza i tuoi dati di streaming!",
+            "es": "¡Analiza tus datos de transmisión!",
+            "pl": "Analizuj dane przesyłane strumieniowo!",
+            "zh-cn": "分析您的流媒体数据！"
+        },
+        "authors": [
+            "Moritz Heusinger <moritz.heusinger@gmail.com>"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "icon": "intelliflow.png",
+        "materialize": true,
+        "enabled": true,
+        "compact": true,
+        "messagebox": true,
+        "extIcon": "https://raw.githubusercontent.com/foxriver76/ioBroker.intelliflow/master/admin/intelliflow.png",
+        "keywords": [
+            "stream",
+            "machine learning",
+            "data analysis",
+            "artificial intelligence",
+            "list"
+        ],
+        "readme": "https://github.com/foxriver76/ioBroker.intelliflow/blob/master/README.md",
+        "loglevel": "info",
+        "type": "logic"
     },
-    "title": "Intelliflow",
-    "desc": {
-      "en": "Analyze your streaming data!",
-      "de": "Analysieren Sie Ihre Streaming-Daten!",
-      "ru": "Анализируйте ваши потоковые данные!",
-      "pt": "Analise seus dados de streaming!",
-      "nl": "Analyseer uw streaminggegevens!",
-      "fr": "Analysez vos données en streaming!",
-      "it": "Analizza i tuoi dati di streaming!",
-      "es": "¡Analiza tus datos de transmisión!",
-      "pl": "Analizuj dane przesyłane strumieniowo!",
-      "zh-cn": "分析您的流媒体数据！"
+    "docs": {},
+    "native": {
+        "tasks": [],
+        "rslvqDecayRate": 0.9,
+        "selectedClassifier": "rslvq-adadelta",
+        "rslvqProtosPerClass": 2,
+        "rslvqSigma": 1.0,
+        "rslvqLearningRate": 0.001,
+        "rslvqBeta1": 0.9,
+        "rslvqBeta2": 0.999
     },
-    "authors": [
-      "Moritz Heusinger <moritz.heusinger@gmail.com>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "icon": "intelliflow.png",
-    "materialize": true,
-    "enabled": true,
-    "compact": true,
-    "messagebox": true,
-    "extIcon": "https://raw.githubusercontent.com/foxriver76/ioBroker.intelliflow/master/admin/intelliflow.png",
-    "keywords": [
-      "stream",
-      "machine learning",
-      "data analysis",
-      "artificial intelligence",
-      "list"
-    ],
-    "readme": "https://github.com/foxriver76/ioBroker.intelliflow/blob/master/README.md",
-    "loglevel": "info",
-    "type": "logic"
-  },
-  "docs": {},
-  "native": {
-    "tasks": []
-  },
-  "protectedNative": [],
-  "objects": [],
-  "instanceObjects": []
+    "protectedNative": [],
+    "objects": [],
+    "instanceObjects": []
 }

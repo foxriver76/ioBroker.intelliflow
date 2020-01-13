@@ -59,6 +59,35 @@
                 $('#values').hide();
             } // endElse
 
+            var $selectedClassifier = $('#selectedClassifier');
+
+            if ($selectedClassifier.val() === 'rslvq-adamax') {
+                $('label[for=rslvqDecayRate], input#rslvqDecayRate').hide();
+                $('label[for=rslvqLearningRate], input#rslvqLearningRate').show();
+                $('label[for=rslvqBeta1], input#rslvqBeta1').show();
+                $('label[for=rslvqBeta2], input#rslvqBeta2').show();
+            } else if ($selectedClassifier.val() === 'rslvq-adadelta') {
+                $('label[for=rslvqLearningRate], input#rslvqLearningRate').hide();
+                $('label[for=rslvqBeta1], input#rslvqBeta1').hide();
+                $('label[for=rslvqBeta2], input#rslvqBeta2').hide();
+                $('label[for=rslvqDecayRate], input#rslvqDecayRate').show();
+            } // endElseIf
+
+            // listen on clf change
+            $selectedClassifier.change(function () {
+                if ($selectedClassifier.val() === 'rslvq-adamax') {
+                    $('label[for=rslvqDecayRate], input#rslvqDecayRate').hide();
+                    $('label[for=rslvqLearningRate], input#rslvqLearningRate').show();
+                    $('label[for=rslvqBeta1], input#rslvqBeta1').show();
+                    $('label[for=rslvqBeta2], input#rslvqBeta2').show();
+                } else if ($selectedClassifier.val() === 'rslvq-adadelta') {
+                    $('label[for=rslvqLearningRate], input#rslvqLearningRate').hide();
+                    $('label[for=rslvqBeta1], input#rslvqBeta1').hide();
+                    $('label[for=rslvqBeta2], input#rslvqBeta2').hide();
+                    $('label[for=rslvqDecayRate], input#rslvqDecayRate').show();
+                } // endElseIf
+            });
+
             onChange(false);
             M.updateTextFields();
         } // endLoad
@@ -90,37 +119,79 @@
 <!-- you have to put your config page in a div with id adapter-container -->
 <div class="m adapter-container">
     <div class="row">
-        <div class="input-field col s6">
-            <img src="intelliflow.png" class="logo">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s5"><a href="#tab-main" class="translate active">Main settings</a></li>
+                <li class="tab col s5"><a href="#tab-classifier" class="translate">Classifier settings</a></li>
+            </ul>
+        </div>
+
+
+        <div id="tab-main" class="col s12 page">
+            <div class="row">
+                <div class="input-field col s6">
+                    <img src="intelliflow.png" class="logo">
+                </div>
+            </div>
+
+            <table id="machine-learning"></table>
+            <div id="pager-ml"></div>
+
+            <div id="values" style="width: 100%; height: calc(100% - 195px)">
+                <div class="row">
+                    <a class="btn-floating waves-effect waves-light blue"><i
+                            class="material-icons table-button-add">add</i></a>
+                </div>
+                <div style="width: 100%; height: calc(100% - 30px); overflow: auto;">
+                    <table class="table-values" style="width: 100%;">
+                        <thead>
+                        <tr>
+                            <th data-name="_index" style="width: 40px" class="blue translate"></th>
+                            <th data-name="name-id" class="blue translate">Unique Name</th>
+                            <th data-name="enum" class="blue translate">Feature Enum</th>
+                            <th data-name="trigger" class="blue translate">Trigger</th>
+                            <th data-name="interval" style="width: 10%" class="blue translate">Interval (s)</th>
+                            <th data-buttons="delete" style="width: 40px" class="blue"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-classifier" class="col s12 page">
+            <div class="input-field col s6">
+                <select id="selectedClassifier" class="value">
+                    <option selected value="rslvq-adadelta">RSLVQ (Adadelta)</option>
+                    <option value="rslvq-adamax">RSLVQ (AdaMax)</option>
+                </select>
+                <label for="selectedClassifier" class="translate">Classifier</label>
+            </div>
+            <div class="input-field col s3">
+                <input class="value" type="number" id="rslvqProtosPerClass" min="1" step="1">
+                <label for="rslvqProtosPerClass" class="translate">Protoypes per class</label>
+            </div>
+            <div class="input-field col s3">
+                <input class="value" type="number" id="rslvqSigma" min="0" step="0.1">
+                <label for="rslvqSigma" class="translate">Sigma</label>
+            </div>
+            <div class="input-field col s3">
+                <input class="value" type="number" id="rslvqDecayRate" min="0" max="1" step="0.1">
+                <label for="rslvqDecayRate" class="translate">Decay Rate</label>
+            </div>
+            <div class="input-field col s3">
+                <input class="value" type="number" id="rslvqBeta1" min="0" max="1" step="0.1">
+                <label for="rslvqBeta1" class="translate">Beta 1</label>
+            </div>
+            <div class="input-field col s3">
+                <input class="value" type="number" id="rslvqBeta2" min="0" max="1" step="0.1">
+                <label for="rslvqBeta2" class="translate">Beta 2</label>
+            </div>
+            <div class="input-field col s3">
+                <input class="value" type="number" id="rslvqLearningRate" min="0" max="1" step="0.1">
+                <label for="rslvqLearningRate" class="translate">Learning rate</label>
+            </div>
         </div>
     </div>
-
-    <table id="machine-learning"></table>
-    <div id="pager-ml"></div>
-
-    <div id="values" style="width: 100%; height: calc(100% - 195px)">
-        <div class="row">
-            <a class="btn-floating waves-effect waves-light blue"><i
-                    class="material-icons table-button-add">add</i></a>
-        </div>
-        <div style="width: 100%; height: calc(100% - 30px); overflow: auto;">
-            <table class="table-values" style="width: 100%;">
-                <thead>
-                <tr>
-                    <th data-name="_index" style="width: 40px" class="blue translate"></th>
-                    <th data-name="name-id" class="blue translate">Unique Name</th>
-                    <th data-name="enum" class="blue translate">Feature Enum</th>
-                    <th data-name="trigger" class="blue translate">Trigger</th>
-                    <th data-name="interval" style="width: 10%" class="blue translate">Interval (s)</th>
-                    <th data-buttons="delete" style="width: 40px" class="blue"></th>
-                </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
-</div>
-</div>
-</div>
 </div>
 </body>
 </html>
