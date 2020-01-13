@@ -120,7 +120,7 @@ async function main() {
             gamma: adapter.config.rslvqDecayRate,
             beta1: adapter.config.rslvqBeta1,
             beta2: adapter.config.rslvqBeta2,
-            gradientOptimizer: selectedClassifier;
+            gradientOptimizer: adapter.config.selectedClassifier
         };
 
         task.classifier = new RSLVQ(options);
