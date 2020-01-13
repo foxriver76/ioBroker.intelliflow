@@ -131,6 +131,15 @@ async function main() {
 
         task.classifier = new RSLVQ(options);
 
+        adapter.log.info(`Created classifier for ${task[`name-id`]} with properties: Sigma: ${task.classifier.sigma},\
+                          Prototypes per class: ${task.classifier.prototypesPerClass},\
+                          Gamma: ${task.classifier.gamma},\
+                          Beta1: ${task.classifier.beta1},\
+                          Beta2: ${task.classifier.beta2},\
+                          Optimizer: ${task.classifier.gradientOptimizer},\
+                          Learning rate: ${task.classifier.learningRate}`);
+
+
         if (initialPrototypesState && initialPrototypesState.val) {
             adapter.log.info(`Successfully loaded prototypes for ${task[`name-id`]}: ${JSON.stringify(task.classifier.w)}`);
         } // endIf
@@ -185,7 +194,7 @@ async function main() {
             storeObj.squaredMeanGradient = task.classifier.squaredMeanGradient;
             storeObj.squaredMeanStep = task.classifier.squaredMeanStep;
             storeObj.pastGradientsM = task.classifier.pastGradientsM;
-            storeOBj.pastSquaredGradientsV = task.classifier.pastSquaredGradientsV;
+            storeObj.pastSquaredGradientsV = task.classifier.pastSquaredGradientsV;
 
             // after learning store the new prototypes
             adapter.setState(`${task[`name-id`]}.prototypes`, JSON.stringify(storeObj), true);
