@@ -23,7 +23,7 @@ There is currently no official support for this adapter. However, it is possible
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Moritz Heusinger <moritz.heusinger@gmail.com>
+Copyright (c) 2019-2020 Moritz Heusinger <moritz.heusinger@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

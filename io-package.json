@@ -50,7 +50,9 @@
         ],
         "readme": "https://github.com/foxriver76/ioBroker.intelliflow/blob/master/README.md",
         "loglevel": "info",
-        "type": "logic"
+        "type": "logic",
+        "connectionType": "local",
+        "dataSource": "assumption"
     },
     "docs": {},
     "native": {
