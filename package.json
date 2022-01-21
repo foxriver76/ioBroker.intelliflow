@@ -1,9 +1,6 @@
 {
 	"name": "iobroker.intelliflow",
 	"version": "0.0.1",
-	"engines": {
-		"node": ">=8.0.0"
-	},
 	"description": "ioBroker Stream Analysis Adapter",
 	"author": {
 		"name": "Moritz Heusinger",

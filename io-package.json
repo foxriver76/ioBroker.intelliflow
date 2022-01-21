@@ -56,7 +56,10 @@
         "loglevel": "info",
         "type": "logic",
         "connectionType": "local",
-        "dataSource": "assumption"
+        "dataSource": "assumption",
+        "dependencies": [{
+            "js-controller": ">=3.3.0"
+        }]
     },
     "native": {
         "tasks": [],
