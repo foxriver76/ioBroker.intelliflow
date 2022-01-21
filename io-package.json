@@ -17,6 +17,10 @@
             }
         },
         "title": "Intelliflow",
+        "titleLang": {
+            "en": "Intelliflow",
+            "de": "Intelliflow"
+        },
         "desc": {
             "en": "Analyze your streaming data!",
             "de": "Analysieren Sie Ihre Streaming-Daten!",
@@ -54,7 +58,6 @@
         "connectionType": "local",
         "dataSource": "assumption"
     },
-    "docs": {},
     "native": {
         "tasks": [],
         "rslvqDecayRate": 0.9,
