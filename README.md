@@ -5,7 +5,6 @@
 ![Build Status](https://github.com/foxriver76/ioBroker.intelliflow/workflows/Test%20and%20Release/badge.svg)
 ![Number of Installations](http://iobroker.live/badges/intelliflow-installed.svg) ![Number of Installations](http://iobroker.live/badges/intelliflow-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.intelliflow.svg)](https://www.npmjs.com/package/iobroker.intelliflow)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.intelliflow.svg)](https://www.npmjs.com/package/iobroker.intelliflow)
-[![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.intelliflow.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.intelliflow.png?downloads=true)](https://nodei.co/npm/iobroker.intelliflow/)
 
